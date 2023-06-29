@@ -5,11 +5,11 @@ import getCenter from 'geolib/es/getCenter';
 // Import the house icon SVG or use a suitable icon library
 import { HomeIcon } from '@heroicons/react/24/solid'
 
-
 function Map({ coord }: { coord: [number, number] }) {
 
+    console.log(coord);
 
-    const coordinates = [{ longitude: 0.176647, latitude: 48.012802 }];
+    const coordinates = [{ longitude: coord[0], latitude: coord[1] }];
     const center = getCenter(coordinates);
 
     const [viewport, setViewport] = useState({
@@ -20,27 +20,18 @@ function Map({ coord }: { coord: [number, number] }) {
         zoom: 11
     });
 
-
     return (
-        <div className='h-screen'>
-            <ReactMapGL
-                mapStyle='mapbox://styles/guillaume-mbl/cle4iupcj000101qt4f3w5inl'
-                mapboxAccessToken={process.env.mapbox_key}
-                {...viewport}
-                onViewportChange={(nextViewport) => setViewport(nextViewport)}
-            >
-
-                <Marker latitude={coord[0]} longitude={coord[1]} offsetLeft={-20} offsetTop={-10}>
-                    <HomeIcon />
-                </Marker>
-
-            </ReactMapGL>
-        </div>
+        <ReactMapGL
+            mapStyle='mapbox://styles/guillaume-mbl/cle4iupcj000101qt4f3w5inl'
+            mapboxAccessToken={process.env.mapbox_key}
+            {...viewport}
+            onViewportChange={(nextViewport) => setViewport(nextViewport)}
+        >
+            <Marker latitude={coord[1]} longitude={coord[0]}>
+                📍
+            </Marker>
+        </ReactMapGL>
     );
 }
 
 export default Map;
-
-function geocodeAddress() {
-    throw new Error('Function not implemented.');
-}

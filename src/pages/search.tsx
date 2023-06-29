@@ -1,33 +1,39 @@
-import React, { Component, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import FormSearch from '@/components/FormSearch'
 import Header from '@/components/Header'
-import { useRouter } from 'next/dist/client/router'
+import { useRouter } from 'next/router'
 import Map from '@/components/Map'
-import ReactMapGL, { ViewportProps } from "react-map-gl";
 
+interface GeoCodeResponse {
+    features: {
+        geometry: {
+            coordinates: [number, number]
+        }
+    }[]
+}
 
 function Search() {
-
-
     const router = useRouter();
-    const { location } = router.query;
-    const [marker, setMarker] = useState<[number, number]>();
+    const location = router.query.location as string | undefined;
+    const [marker, setMarker] = useState<[number, number] | undefined>();
 
     useEffect(() => {
-        const geocodeAddress = async () => {
+        const geocodeAddress = async (location: string) => {
             try {
-                if (location) {
-                    const response = await fetch(
-                        `https://api-adresse.data.gouv.fr/search/?q=${encodeURIComponent(location)}`
-                    );
-                    const data = await response.json();
+                const response = await fetch(
+                    `https://api-adresse.data.gouv.fr/search/?q=${encodeURIComponent(location)}`
+                );
 
-                    if (data.features.length > 0) {
-                        const coordinates = data.features[0].geometry.coordinates;
-                        setMarker(coordinates);
-                        console.log(marker);
+                if (!response.ok) {
+                    console.error('Network response was not ok');
+                    return;
+                }
 
-                    }
+                const data: GeoCodeResponse = await response.json();
+
+                if (data.features.length > 0) {
+                    const coordinates = data.features[0].geometry.coordinates;
+                    setMarker(coordinates);
 
 
                 }
@@ -36,9 +42,10 @@ function Search() {
             }
         };
 
-        geocodeAddress();
-    }, []);
-    
+        if (location) {
+            geocodeAddress(location);
+        }
+    }, [marker]);
 
     return (
         <div>
@@ -46,7 +53,7 @@ function Search() {
             <main className='grid grid-cols-2 h-screen'>
                 <section className='flex flex-col items-center pt-12'>
                     <div>
-                        Concernant votre bien situé au {location}
+                        {location ? `Concernant votre bien situé au ${location}` : 'Veuillez entrer une adresse'}
                     </div>
                     <div className='mt-1'>
                         <div>
@@ -55,25 +62,11 @@ function Search() {
                     </div>
                 </section>
                 <section className='hidden xl:inline-flex xl:min-w-[600px]'>
-                    <Map coord={marker} />
+                    {marker && <Map coord={marker} />}
                 </section>
-
             </main>
         </div>
     )
 }
 
 export default Search;
-
-// export async function getServerSideProps() {
-//     const searchResults = await fetch("https://api-adresse.data.gouv.fr/search/?q=213 avenue rubillard 72000")
-//         .then(
-//             (res) => res.json()
-//         );
-//     return {
-//         props: {
-//             searchResults,
-//         }
-//     }
-
-// }
