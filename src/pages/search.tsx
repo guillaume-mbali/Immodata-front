@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import FormSearch from '@/components/FormSearch'
 import Header from '@/components/Header'
 import { useRouter } from 'next/router'
-import Map from '@/components/Map'
+import MapManagement from '@/components/MapManagement'
 
 interface GeoCodeResponse {
     features: {
@@ -51,18 +51,18 @@ function Search() {
         <div>
             <Header />
             <main className='grid grid-cols-2 h-screen'>
-                <section className='flex flex-col items-center pt-12'>
-                    <div>
+                <section className='flex flex-col mx-2 pt-20'>
+                    <div className='self-center'>
                         {location ? `Concernant votre bien situé au ${location}` : 'Veuillez entrer une adresse'}
                     </div>
-                    <div className='mt-1'>
+                    <div className='mt-8'>
                         <div>
                             <FormSearch />
                         </div>
                     </div>
                 </section>
                 <section className='hidden xl:inline-flex xl:min-w-[600px]'>
-                    {marker && <Map coord={marker} />}
+                    {marker && <MapManagement coord={marker} />}
                 </section>
             </main>
         </div>

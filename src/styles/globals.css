@@ -21,3 +21,14 @@ div[mapboxgl-children] {
 .mapboxgl-canvas-container {
     height: 100% !important;
 }
+
+.mapboxgl-marker {
+    position: absolute;
+    top: 0;
+    left: 0;
+    will-change: transform;
+}
+.mapboxgl-map .mapboxgl-canvas {
+    top: 0;
+    left: 0;
+}

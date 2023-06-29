@@ -92,17 +92,19 @@ function FormSearch() {
     };
 
     return (
-        <div className="w-full max-w-md mx-auto mt-10">
+        <div className="w-full mt-10">
+
             <Steps current={currentStep} progressDot>
                 <Step title="De quel type de bien s'agit-il ?" />
                 <Step title="Informations principales du bien" />
                 <Step title="Confirmation" />
             </Steps>
 
+
             {/* Formulaire 1 : Détails personnels */}
             {currentStep === 0 && (
-                <div className="mt-10">
-                    <div className='flex gap-5'>
+                <div className="mt-20">
+                    <div className='flex items-center justify-center gap-8'>
                         <CardProperty
                             icon={props => <HomeIcon {...props} />}
                             title='Maison'
@@ -117,37 +119,40 @@ function FormSearch() {
                         />
                     </div>
                 </div>
+
             )}
 
             {/* Formulaire 2 : Coordonnées */}
             {currentStep === 1 && (
-                <div className="mt-10">
-                    <div className='flex flex-col gap-5'>
-                        <div className='flex justify-between'>
-                            <p>Surface :</p>
-                            <InputNumber
-                                min={1} max={10}
-                                value={propertyDetailsFormData.area}
-                                onChange={(e) => setPropertyDetailsFormData({ ...propertyDetailsFormData, area: e.target.value })
-                                }
-                            />
-                        </div>
-                        <div className='flex justify-between'>
-                            <p>Nombre de pièces :</p>
-                            <InputNumber
-                                min={1} max={10}
-                                value={propertyDetailsFormData.nbPiece}
-                                onChange={(e) => setPropertyDetailsFormData({ ...propertyDetailsFormData, nbPiece: e.target.value })
-                                }
-                            />
+                <div className="mt-20">
+                    <div className='flex items-center justify-center '>
+                        <div className='w-64 flex-col flex gap-5'>
+                            <div className='flex justify-between'>
+                                <p>Surface :</p>
+                                <InputNumber
+                                    min={1} max={10}
+                                    value={propertyDetailsFormData.area}
+                                    onChange={(e) => setPropertyDetailsFormData({ ...propertyDetailsFormData, area: e.target.value })
+                                    }
+                                />
+                            </div>
+                            <div className='flex justify-between'>
+                                <p>Nombre de pièces :</p>
+                                <InputNumber
+                                    min={1} max={10}
+                                    value={propertyDetailsFormData.nbPiece}
+                                    onChange={(e) => setPropertyDetailsFormData({ ...propertyDetailsFormData, nbPiece: e.target.value })
+                                    }
+                                />
+                            </div>
                         </div>
                     </div>
                 </div>
             )}
             {/* Formulaire 3 : Confirmation */}
             {currentStep === 2 && (
-                <div className="mt-10">
-                    <div className="mb-5 text-green-500 flex items-center">
+                <div className="mt-20">
+                    <div className="mb-5 text-green-500 flex items-center justify-center">
                         {/* <CheckCircleOutlined className="mr-2" /> */}
                         Vos informations ont été soumises avec succès !
                     </div>
